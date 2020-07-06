@@ -40,8 +40,8 @@ namespace API
             services.AddDbContext<StoreContext>(options =>
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
-            services.AddApplicationServices();
             services.AddControllers();
+            services.AddApplicationServices();
 
             services.AddSwaggerExtensions();
 
