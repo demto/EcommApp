@@ -102,6 +102,10 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
+            if (await _userManager.FindByEmailAsync(registerDto.Email) != null) {
+                return BadRequest(new ApiValidationErrorResponse{Errors = new [] {"Email address is already in use."}});
+            }
+
             var user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,
