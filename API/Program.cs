@@ -33,6 +33,8 @@ namespace API
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     await identityContext.Database.MigrateAsync();
                     await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+
+                    
                 }
                 catch (Exception ex) {
                     var logger = loggerFactory.CreateLogger<Program>();

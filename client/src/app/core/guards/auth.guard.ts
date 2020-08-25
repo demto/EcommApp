@@ -16,6 +16,7 @@ import { map } from 'rxjs/operators';
     canActivate(
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> {
+        this.accountService.currentUser$.subscribe(x => console.log(x));
       return this.accountService.currentUser$.pipe(
         map(auth => {
           if (auth) {

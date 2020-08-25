@@ -10,7 +10,7 @@ import { AccountService } from './account/account.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'ECommApp';
 
   constructor(private basketService: BasketService, private accountService: AccountService) { }
@@ -33,12 +33,10 @@ export class AppComponent implements OnInit{
 
   loadUser() {
     const userToken = localStorage.getItem('token');
-    if (userToken) {
-      this.accountService.loadCurrentUser(userToken).subscribe(() => {
-        console.log('User has been loaded.');
-      }, error => {
-        console.log('Usrr could not be loaded.');
-      });
-    }
+    this.accountService.loadCurrentUser(userToken).subscribe(() => {
+      console.log('User has been loaded.');
+    }, error => {
+      console.log('Usrr could not be loaded.');
+    });
   }
 }

@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using System.Reflection;
 using System.Linq;
+using Core.Entities.OrderAggregate;
+using System;
+using System.ComponentModel;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data
 {
@@ -16,6 +20,10 @@ namespace Infrastructure.Data
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
             base.OnModelCreating(modelBuilder);
@@ -26,9 +34,15 @@ namespace Infrastructure.Data
                     var properties = entityType.ClrType.GetProperties()
                         .Where(p => p.PropertyType.Equals(typeof(decimal)));
 
+                    var dateTimeProperties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(DateTimeOffset));
+
                     foreach (var property in properties) {
                         modelBuilder.Entity(entityType.Name).Property(property.Name)
                         .HasConversion<double>();
+                    }
+
+                    foreach (var item in dateTimeProperties) {
+                        modelBuilder.Entity(entityType.Name).Property(item.Name).HasConversion(new DateTimeOffsetToBinaryConverter());
                     }
                 }
             }
