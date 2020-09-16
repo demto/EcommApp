@@ -1,0 +1,35 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { BasketService } from 'src/app/basket/basket.service';
+import { DeliveryMethod } from 'src/app/shared/models/deliveryMethod';
+import { CheckoutService } from '../checkout.service';
+
+@Component({
+  selector: 'app-checkout-delivery',
+  templateUrl: './checkout-delivery.component.html',
+  styleUrls: ['./checkout-delivery.component.scss']
+})
+export class CheckoutDeliveryComponent implements OnInit {
+
+  @Input() checkoutForm: FormGroup;
+  deliveryMethods: DeliveryMethod[];
+
+  constructor(private checkoutService: CheckoutService,
+              private toastr: ToastrService,
+              private basketService: BasketService) { }
+
+  ngOnInit() {
+    this.checkoutService.getDeliveryMethods().subscribe((dm: DeliveryMethod[]) => {
+      this.deliveryMethods = dm;
+    }, error => {
+      console.log(error);
+      this.toastr.error(error);
+    });
+  }
+
+  setShippingPrice(deliveryMethod: DeliveryMethod) {
+    this.basketService.setShippingPrice(deliveryMethod);
+  }
+
+}
