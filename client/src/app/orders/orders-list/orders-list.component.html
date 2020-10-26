@@ -1,0 +1,20 @@
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Order email</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of orders" class="trow" (click)="selectRow(item.id)">
+                <td>#{{item.id}}</td>
+                <td>{{item.orderDate | date}}</td>
+                <td>{{item.buyerEmail}}</td>
+                <td>{{item.subTotal | currency:'£'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
