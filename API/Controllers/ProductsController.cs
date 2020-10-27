@@ -30,6 +30,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [Cached(600)]
         [HttpGet]
         public async Task<IActionResult> GetProducts([FromQuery]ProductSpecParams productParams) {
             var specs = new ProductsWithTypeAndBrandSpecification(productParams);
@@ -42,6 +43,7 @@ namespace API.Controllers
                 productParams.PageSize, totalItems, data));
         }
 
+        [Cached(600)]
         [HttpGet("{productId}")]
         public async Task<IActionResult> GetProduct(int productId) {
             var spec = new ProductsWithTypeAndBrandSpecification(productId);
@@ -50,12 +52,14 @@ namespace API.Controllers
             return Ok(productToReturn);
         }
         
+        [Cached(600)]
         [HttpGet("Types")]
         public async Task<IActionResult> GetProductTypess() {
             var productTypes = await _productTypeRepo.ListAllAsync();
             return Ok(productTypes);
         }
         
+        [Cached(600)]
         [HttpGet("Brands")]
         public async Task<IActionResult> GetProductBrands() {
             var productBrands = await _productBrandRepo.ListAllAsync();
